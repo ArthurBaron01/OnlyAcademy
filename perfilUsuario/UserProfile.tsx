@@ -4,7 +4,29 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
+  Image,
+  FlatList,
+  ListRenderItem,
 } from 'react-native';
+
+const userImages = [
+  'https://via.placeholder.com/150',
+  'https://via.placeholder.com/150',
+  'https://via.placeholder.com/150',
+  'https://via.placeholder.com/150',
+  'https://via.placeholder.com/150',
+  'https://via.placeholder.com/150',
+  'https://via.placeholder.com/150',
+  'https://via.placeholder.com/150',
+  'https://via.placeholder.com/150',
+  'https://via.placeholder.com/150',
+  'https://via.placeholder.com/150',
+  'https://via.placeholder.com/150',
+  'https://via.placeholder.com/150',
+  'https://via.placeholder.com/150',
+  'https://via.placeholder.com/150',
+
+];
 
 const UserProfile = () => {
   const [isFollowing, setIsFollowing] = useState(false);
@@ -13,15 +35,18 @@ const UserProfile = () => {
     setIsFollowing(prevState => !prevState);
   };
 
-  return (
-    <View style={styles.container}>
+  const renderHeader = () => (
+    <View style={styles.headerContainer}>
+      <Image
+        source={{ uri: 'https://via.placeholder.com/150/0000FF/808080?text=Montanhas+ao+amanhecer' }}
+        style={styles.profileImage}
+      />
       <Text style={styles.username}>Nome do Usuário</Text>
       <Text style={styles.bio}>Bio do usuário</Text>
       <View style={styles.statsContainer}>
-        <Text style={styles.stats}>Seguidores: XX</Text>
-        <Text style={styles.stats}>Seguindo: XX</Text>
+        <Text style={styles.stats}>Seguidores: 2587</Text>
+        <Text style={styles.stats}>Seguindo: 1326</Text>
       </View>
-      {/* Botão para seguir ou deixar de seguir o usuário */}
       <TouchableOpacity
         style={[styles.followButton, { backgroundColor: isFollowing ? 'gray' : 'blue' }]}
         onPress={toggleFollow}>
@@ -31,12 +56,37 @@ const UserProfile = () => {
       </TouchableOpacity>
     </View>
   );
+
+  const renderItem: ListRenderItem<string> = ({ item }) => (
+    <Image source={{ uri: item }} style={styles.feedImage} />
+  );
+
+  return (
+    <FlatList
+      ListHeaderComponent={renderHeader}
+      data={userImages}
+      renderItem={renderItem}
+      keyExtractor={(item, index) => index.toString()}
+      numColumns={3}
+      contentContainerStyle={styles.container}
+    />
+  );
 };
 
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
-    padding: 20,
+    paddingBottom: 20,
+  },
+  headerContainer: {
+    alignItems: 'center',
+    paddingBottom: 20,
+  },
+  profileImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+    marginBottom: 10,
   },
   username: {
     fontSize: 20,
@@ -63,6 +113,11 @@ const styles = StyleSheet.create({
   followButtonText: {
     color: 'white',
     fontWeight: 'bold',
+  },
+  feedImage: {
+    width: 100,
+    height: 100,
+    margin: 5,
   },
 });
 
